@@ -15,12 +15,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { apiService, Post } from '../../services/api';
 import { useTheme } from '../../hooks/useTheme';
 import { spacing, typography, borderRadius } from '../../styles/theme';
+import NotificationService from '../../services/NotificationService';
 
 const { width } = Dimensions.get('window');
 
 const PostsScreen = () => {
   const { colors } = useTheme();
   
+  const [previousPostCount, setPreviousPostCount] = React.useState(0);
+
   const {
     data: posts,
     isLoading,
@@ -44,6 +47,22 @@ const PostsScreen = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3,
   });
+
+  React.useEffect(() => {
+    if (posts?.length && previousPostCount > 0 && posts.length > previousPostCount) {
+      const newPosts = posts.slice(previousPostCount);
+      newPosts.forEach(async (post) => {
+        await NotificationService.showNotification(
+          `New Post from ${post.user?.name || 'Unknown User'}`,
+          post.title,
+          { postId: post.id }
+        );
+      });
+    }
+    if (posts?.length) {
+      setPreviousPostCount(posts.length);
+    }
+  }, [posts?.length]);
 
   const renderPost = ({ item }: { item: Post }) => (
     <TouchableOpacity

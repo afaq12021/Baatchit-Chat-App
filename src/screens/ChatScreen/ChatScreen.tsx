@@ -16,6 +16,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { spacing, typography, borderRadius } from '../../styles/theme';
 import { useTheme } from '../../hooks/useTheme';
+import NotificationService from '../../services/NotificationService';
 
 const { width, height } = Dimensions.get('window');
 
@@ -125,7 +126,7 @@ const ChatScreen = () => {
       setIsTyping(true);
     }, 3000);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsTyping(false);
       const responses = [
         'Yes, absolutely! Looking forward to it.',
@@ -141,6 +142,15 @@ const ChatScreen = () => {
         isUser: false,
         status: 'read',
       };
+
+      // Show notification if app is not focused on this chat
+      if (!navigation.isFocused()) {
+        await NotificationService.showMessageNotification(
+          chatData.name,
+          response,
+          chatData.avatar
+        );
+      }
       
       setMessages(prev => [...prev, responseMessage]);
       setTimeout(() => {
