@@ -1,12 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const STORAGE_KEYS = {
-  THEME_MODE: '@theme_mode',
-  CHAT_FAVORITES: '@chat_favorites',
-  USER_SETTINGS: '@user_settings',
-};
-
 export class StorageService {
+  static readonly STORAGE_KEYS = {
+    THEME_MODE: '@theme_mode',
+    CHAT_FAVORITES: '@chat_favorites',
+    USER_SETTINGS: '@user_settings',
+  };
   static async setItem(key: string, value: any): Promise<void> {
     try {
       const jsonValue = JSON.stringify(value);
@@ -44,20 +43,29 @@ export class StorageService {
 
   // Theme specific methods
   static async saveThemeMode(mode: 'light' | 'dark'): Promise<void> {
-    await this.setItem(STORAGE_KEYS.THEME_MODE, mode);
+    await this.setItem(StorageService.STORAGE_KEYS.THEME_MODE, mode);
   }
 
   static async getThemeMode(): Promise<'light' | 'dark' | null> {
-    return await this.getItem<'light' | 'dark'>(STORAGE_KEYS.THEME_MODE);
+    return await this.getItem<'light' | 'dark'>(StorageService.STORAGE_KEYS.THEME_MODE);
   }
 
   // Favorites specific methods
   static async saveFavorites(favorites: string[]): Promise<void> {
-    await this.setItem(STORAGE_KEYS.CHAT_FAVORITES, favorites);
+    await this.setItem(StorageService.STORAGE_KEYS.CHAT_FAVORITES, favorites);
   }
 
   static async getFavorites(): Promise<string[]> {
-    const favorites = await this.getItem<string[]>(STORAGE_KEYS.CHAT_FAVORITES);
+    const favorites = await this.getItem<string[]>(StorageService.STORAGE_KEYS.CHAT_FAVORITES);
     return favorites || [];
+  }
+
+  // User settings methods
+  static async saveUserSettings(settings: any): Promise<void> {
+    await this.setItem(StorageService.STORAGE_KEYS.USER_SETTINGS, settings);
+  }
+
+  static async getUserSettings(): Promise<any | null> {
+    return await this.getItem(StorageService.STORAGE_KEYS.USER_SETTINGS);
   }
 }

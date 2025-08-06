@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { spacing, typography, borderRadius } from '../../styles/theme';
 import { useTheme } from '../../hooks/useTheme';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
-import { toggleFavorite, setActiveChat } from '../../redux/slices/chatSlice';
+import { toggleFavoriteWithPersist, setActiveChat, loadFavorites } from '../../redux/slices/chatSlice';
 import { StorageService } from '../../utils/storage';
 
 const { width } = Dimensions.get('window');
@@ -136,18 +136,29 @@ const ChatsScreen = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
-  const [localChats, setLocalChats] = React.useState(mockChats);
+  const { favorites } = useAppSelector((state) => state.chat);
+  const [chats, setChats] = React.useState(mockChats.map(chat => ({
+    ...chat,
+    isFavorite: favorites.includes(chat.id)
+  })));
 
-  // Remove useEffect as we're handling favorites locally now
+  useEffect(() => {
+    // Load favorites from storage when component mounts
+    dispatch(loadFavorites());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Update chats when favorites change
+    setChats(prevChats =>
+      prevChats.map(chat => ({
+        ...chat,
+        isFavorite: favorites.includes(chat.id)
+      }))
+    );
+  }, [favorites]);
 
   const handleToggleFavorite = (chatId: string) => {
-    setLocalChats(prevChats => 
-      prevChats.map(chat => 
-        chat.id === chatId 
-          ? { ...chat, isFavorite: !chat.isFavorite }
-          : chat
-      )
-    );
+    dispatch(toggleFavoriteWithPersist(chatId));
   };
 
   const openChat = (chat: any) => {
@@ -204,13 +215,13 @@ const ChatsScreen = () => {
         <Text style={[styles.headerTitle, { color: colors.text }]}>Chats</Text>
       </View>
 
-             <FlatList
-         data={localChats}
-         renderItem={renderChatItem}
-         keyExtractor={item => item.id}
-         contentContainerStyle={styles.chatsList}
-         showsVerticalScrollIndicator={false}
-       />
+        <FlatList
+          data={chats}
+          renderItem={renderChatItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.chatsList}
+          showsVerticalScrollIndicator={false}
+        />
     </SafeAreaView>
   );
 };
