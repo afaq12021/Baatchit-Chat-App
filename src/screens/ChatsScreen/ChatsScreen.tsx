@@ -75,21 +75,79 @@ const mockChats: Chat[] = [
     unreadCount: 0,
     isFavorite: false,
   },
+  {
+    id: '6',
+    name: 'Emma Davis',
+    lastMessage: 'Can you send me the files?',
+    timestamp: '3h ago',
+    avatar: '👩‍💼',
+    unreadCount: 3,
+    isFavorite: false,
+  },
+  {
+    id: '7',
+    name: 'Mike Chen',
+    lastMessage: 'Great work on the presentation!',
+    timestamp: '5h ago',
+    avatar: '👨‍💻',
+    unreadCount: 0,
+    isFavorite: false,
+  },
+  {
+    id: '8',
+    name: 'Family Group',
+    lastMessage: 'Dinner at 7 PM tonight',
+    timestamp: '1d ago',
+    avatar: '👨‍👩‍👧‍👦',
+    unreadCount: 8,
+    isFavorite: true,
+  },
+  {
+    id: '9',
+    name: 'Lisa Thompson',
+    lastMessage: 'See you at the coffee shop',
+    timestamp: '2d ago',
+    avatar: '👩‍🎨',
+    unreadCount: 0,
+    isFavorite: false,
+  },
+  {
+    id: '10',
+    name: 'David Rodriguez',
+    lastMessage: 'The meeting was productive',
+    timestamp: '2d ago',
+    avatar: '👨‍🔬',
+    unreadCount: 1,
+    isFavorite: false,
+  },
+  {
+    id: '11',
+    name: 'Anna Kim',
+    lastMessage: 'Thanks for the birthday wishes!',
+    timestamp: '3d ago',
+    avatar: '👩‍🎤',
+    unreadCount: 0,
+    isFavorite: true,
+  },
+
 ];
 
 const ChatsScreen = () => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
-  const { chats, favorites } = useAppSelector((state) => state.chat);
+  const [localChats, setLocalChats] = React.useState(mockChats);
 
-  useEffect(() => {
-    // Save favorites to storage when they change
-    StorageService.saveFavorites(favorites);
-  }, [favorites]);
+  // Remove useEffect as we're handling favorites locally now
 
   const handleToggleFavorite = (chatId: string) => {
-    dispatch(toggleFavorite(chatId));
+    setLocalChats(prevChats => 
+      prevChats.map(chat => 
+        chat.id === chatId 
+          ? { ...chat, isFavorite: !chat.isFavorite }
+          : chat
+      )
+    );
   };
 
   const openChat = (chat: any) => {
@@ -118,17 +176,19 @@ const ChatsScreen = () => {
         <View style={styles.chatHeader}>
           <Text style={[styles.chatName, { color: colors.text }]}>{item.name}</Text>
           <View style={styles.rightSection}>
-            <Text style={[styles.timestamp, { color: colors.textSecondary }]}>{item.timestamp}</Text>
-            <TouchableOpacity
-              onPress={() => handleToggleFavorite(item.id)}
-              style={styles.favoriteButton}
-            >
-              <Ionicons
-                name={item.isFavorite ? 'heart' : 'heart-outline'}
-                size={20}
-                color={item.isFavorite ? colors.accent : colors.inactive}
-              />
-            </TouchableOpacity>
+            <View style={styles.timestampRow}>
+              <Text style={[styles.timestamp, { color: colors.textSecondary }]}>{item.timestamp}</Text>
+              <TouchableOpacity
+                onPress={() => handleToggleFavorite(item.id)}
+                style={styles.favoriteButton}
+              >
+                <Ionicons
+                  name={item.isFavorite ? 'heart' : 'heart-outline'}
+                  size={16}
+                  color={item.isFavorite ? colors.accent : colors.inactive}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
         <Text style={[styles.lastMessage, { color: colors.textSecondary }]} numberOfLines={1}>
@@ -143,14 +203,14 @@ const ChatsScreen = () => {
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>Chats</Text>
       </View>
-      
-      <FlatList
-        data={chats}
-        renderItem={renderChatItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.chatsList}
-        showsVerticalScrollIndicator={false}
-      />
+
+             <FlatList
+         data={localChats}
+         renderItem={renderChatItem}
+         keyExtractor={item => item.id}
+         contentContainerStyle={styles.chatsList}
+         showsVerticalScrollIndicator={false}
+       />
     </SafeAreaView>
   );
 };
@@ -227,14 +287,20 @@ const styles = StyleSheet.create({
   },
   rightSection: {
     alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  timestampRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   timestamp: {
     ...typography.small,
     fontSize: 12,
-    marginBottom: 2,
+    marginRight: spacing.xs,
   },
   favoriteButton: {
-    display: 'none', 
+    padding: 4,
+    marginLeft: spacing.sm,
   },
   lastMessage: {
     ...typography.caption,

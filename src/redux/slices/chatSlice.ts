@@ -27,55 +27,9 @@ interface ChatState {
 }
 
 const initialState: ChatState = {
-  chats: [
-    {
-      id: '1',
-      name: 'John Doe',
-      lastMessage: 'Hey, how are you doing?',
-      timestamp: '2m ago',
-      avatar: '👨‍💼',
-      unreadCount: 2,
-      isFavorite: false,
-    },
-    {
-      id: '2',
-      name: 'Sarah Wilson',
-      lastMessage: 'Thanks for the help today!',
-      timestamp: '10m ago',
-      avatar: '👩‍💻',
-      unreadCount: 0,
-      isFavorite: true,
-    },
-    {
-      id: '3',
-      name: 'Team Group',
-      lastMessage: 'Meeting at 3 PM tomorrow',
-      timestamp: '1h ago',
-      avatar: '👥',
-      unreadCount: 5,
-      isFavorite: false,
-    },
-    {
-      id: '4',
-      name: 'Mom',
-      lastMessage: 'Don\'t forget to call grandma',
-      timestamp: '2h ago',
-      avatar: '👩‍🦳',
-      unreadCount: 1,
-      isFavorite: true,
-    },
-    {
-      id: '5',
-      name: 'Alex Johnson',
-      lastMessage: 'The project looks great!',
-      timestamp: '1d ago',
-      avatar: '👨‍🎨',
-      unreadCount: 0,
-      isFavorite: false,
-    },
-  ],
+  chats: [],
   activeChat: null,
-  favorites: ['2', '4'],
+  favorites: [],
 };
 
 const chatSlice = createSlice({
@@ -96,6 +50,10 @@ const chatSlice = createSlice({
     },
     setActiveChat: (state, action: PayloadAction<Chat>) => {
       state.activeChat = action.payload;
+      // Add chat to chats array if it doesn't exist
+      if (!state.chats.find(chat => chat.id === action.payload.id)) {
+        state.chats.push(action.payload);
+      }
     },
     addMessage: (state, action: PayloadAction<{ chatId: string; message: Message }>) => {
       const { chatId, message } = action.payload;
