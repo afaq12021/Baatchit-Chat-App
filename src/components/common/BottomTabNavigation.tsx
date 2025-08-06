@@ -6,10 +6,11 @@ import {
   Dimensions,
   GestureResponderEvent,
   Text,
+  Platform,
 } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { colors, spacing, typography, borderRadius } from '../../styles/theme';
+import { spacing, typography, borderRadius } from '../../styles/theme';
 import { useTheme } from '../../hooks/useTheme';
 
 const { width, height } = Dimensions.get('window');
@@ -21,9 +22,9 @@ type TabConfig = {
 };
 
 const tabConfigs: { [key: string]: TabConfig } = {
-  chats: { name: 'chats', icon: 'chatbubbles', label: 'Chats' },
-  posts: { name: 'posts', icon: 'grid', label: 'Posts' },
-  profile: { name: 'profile', icon: 'person', label: 'Profile' },
+  chats: { name: 'chats', icon: 'chatbubbles-outline', label: 'Chats' },
+  posts: { name: 'posts', icon: 'grid-outline', label: 'Posts' },
+  profile: { name: 'profile', icon: 'person-outline', label: 'Profile' },
 };
 
 const BottomtabNavigation: React.FC<BottomTabBarProps> = ({
@@ -34,7 +35,14 @@ const BottomtabNavigation: React.FC<BottomTabBarProps> = ({
   const { colors: themeColors } = useTheme();
   
   return (
-    <View style={[styles.main, { backgroundColor: themeColors.background, borderTopColor: themeColors.border }]}>
+    <View style={[
+      styles.main, 
+      { 
+        backgroundColor: themeColors.background, 
+        borderTopColor: themeColors.border,
+        shadowColor: themeColors.shadow,
+      }
+    ]}>
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
         const tabConfig = tabConfigs[route.name];
@@ -60,14 +68,15 @@ const BottomtabNavigation: React.FC<BottomTabBarProps> = ({
             style={[
               styles.tabButton,
               isFocused && styles.activeTab
-            ]}>
+            ]}
+            activeOpacity={0.7}
+          >
             <View style={styles.iconContainer}>
               <Ionicons
                 name={tabConfig.icon}
                 size={24}
                 color={isFocused ? themeColors.primary : themeColors.inactive}
               />
-              {isFocused && <View style={[styles.activeIndicator, { backgroundColor: themeColors.primary }]} />}
             </View>
             <Text style={[
               styles.tabLabel,
@@ -84,16 +93,12 @@ const BottomtabNavigation: React.FC<BottomTabBarProps> = ({
 
 const styles = StyleSheet.create({
   main: {
-    backgroundColor: colors.background,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    height: height * 0.09,
-    borderTopLeftRadius: borderRadius.xxl,
-    borderTopRightRadius: borderRadius.xxl,
-    shadowColor: colors.shadow,
+    paddingVertical: spacing.sm,
+    height: Platform.OS === 'ios' ? 88 : 64,
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,
@@ -103,15 +108,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
   },
   tabButton: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: spacing.sm,
     borderRadius: borderRadius.lg,
-    minWidth: 70,
+    minWidth: 60,
     flex: 1,
   },
   activeTab: {
@@ -121,20 +125,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   activeIndicator: {
     position: 'absolute',
-    bottom: -8,
+    bottom: -6,
     width: 4,
     height: 4,
     borderRadius: 2,
-    backgroundColor: colors.primary,
   },
   tabLabel: {
     ...typography.small,
     fontWeight: '500',
     marginTop: 2,
+    fontSize: 11,
   },
 });
 

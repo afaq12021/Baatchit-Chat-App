@@ -217,6 +217,9 @@ const ChatScreen = () => {
           style={[
             styles.messageBubble,
             item.isUser ? styles.userBubble : styles.otherBubble,
+            {
+              backgroundColor: item.isUser ? colors.primary : colors.surface,
+            },
           ]}
         >
           <Text
@@ -391,16 +394,20 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.lg,
     maxWidth: '100%',
+    minHeight: 40,
   },
   userBubble: {
     borderBottomRightRadius: 4,
+    backgroundColor: '#2196F3',
   },
   otherBubble: {
     borderBottomLeftRadius: 4,
+    backgroundColor: '#F5F5F5',
   },
   messageText: {
     ...typography.body,
     lineHeight: 20,
+    fontSize: 16,
   },
   messageInfo: {
     flexDirection: 'row',
@@ -410,12 +417,15 @@ const styles = StyleSheet.create({
   },
   timestamp: {
     ...typography.small,
+    fontSize: 12,
+    color: '#666666',
   },
   statusIcon: {
     marginLeft: 4,
   },
   typingBubble: {
     paddingVertical: spacing.md,
+    backgroundColor: '#F5F5F5',
   },
   typingDots: {
     flexDirection: 'row',
@@ -426,11 +436,14 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     marginHorizontal: 2,
+    backgroundColor: '#666666',
   },
   inputContainer: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+    backgroundColor: '#FFFFFF',
   },
   inputWrapper: {
     flexDirection: 'row',
@@ -438,12 +451,15 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.xxl,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+    backgroundColor: '#F5F5F5',
   },
   textInput: {
     flex: 1,
     ...typography.body,
     maxHeight: 100,
     marginRight: spacing.sm,
+    fontSize: 16,
+    color: '#000000',
   },
   sendButton: {
     width: 40,
@@ -451,6 +467,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#2196F3',
   },
 });
 

@@ -39,8 +39,12 @@ const ProfileScreen = () => {
   ];
 
   const renderProfileOption = (option: any, index: number) => (
-    <TouchableOpacity key={index} style={[styles.optionItem, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      <View style={[styles.optionIcon, { backgroundColor: colors.background }]}>
+    <TouchableOpacity 
+      key={index} 
+      style={[styles.optionItem, { borderBottomColor: colors.border }]}
+      activeOpacity={0.7}
+    >
+      <View style={[styles.optionIcon, { backgroundColor: colors.inputBackground }]}>
         <Ionicons name={option.icon} size={24} color={colors.primary} />
       </View>
       <View style={styles.optionContent}>
@@ -52,8 +56,8 @@ const ProfileScreen = () => {
   );
 
   const renderThemeOption = () => (
-    <View style={[styles.optionItem, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      <View style={[styles.optionIcon, { backgroundColor: colors.background }]}>
+    <View style={[styles.optionItem, { borderBottomColor: colors.border }]}>
+      <View style={[styles.optionIcon, { backgroundColor: colors.inputBackground }]}>
         <Ionicons name={isDark ? 'moon' : 'sunny'} size={24} color={colors.primary} />
       </View>
       <View style={styles.optionContent}>
@@ -66,7 +70,8 @@ const ProfileScreen = () => {
         value={isDark}
         onValueChange={handleThemeToggle}
         trackColor={{ false: colors.inactive, true: colors.primary }}
-        thumbColor={colors.background}
+        thumbColor={isDark ? colors.primary : colors.background}
+        ios_backgroundColor={colors.inputBackground}
       />
     </View>
   );
@@ -80,18 +85,18 @@ const ProfileScreen = () => {
         </View>
 
         {/* Profile Card */}
-        <View style={[styles.profileCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.profileCard, { borderBottomColor: colors.border }]}>
           <View style={styles.avatarContainer}>
             <Text style={styles.avatar}>👤</Text>
             <TouchableOpacity style={styles.cameraButton}>
               <Ionicons name="camera" size={16} color={colors.textLight} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.profileName}>John Doe</Text>
-          <Text style={styles.profileStatus}>Available</Text>
-          <TouchableOpacity style={styles.editButton}>
+          <Text style={[styles.profileName, { color: colors.text }]}>Afaq Ul Islam</Text>
+          <Text style={[styles.profileStatus, { color: colors.textSecondary }]}>Available</Text>
+          <TouchableOpacity style={[styles.editButton, { backgroundColor: colors.inputBackground }]}>
             <Ionicons name="pencil" size={16} color={colors.primary} />
-            <Text style={styles.editButtonText}>Edit Profile</Text>
+            <Text style={[styles.editButtonText, { color: colors.primary }]}>Edit Profile</Text>
           </TouchableOpacity>
         </View>
 
@@ -105,16 +110,25 @@ const ProfileScreen = () => {
           {profileOptions.map(renderProfileOption)}
         </View>
 
-        {/* Logout Button */}
-        <TouchableOpacity style={styles.logoutButton}>
-          <Ionicons name="log-out-outline" size={24} color={colors.error} />
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
+                 {/* Logout Button */}
+         <TouchableOpacity 
+           style={[
+             styles.logoutButton, 
+             { 
+               backgroundColor: colors.inputBackground,
+               borderColor: colors.border 
+             }
+           ]}
+           activeOpacity={0.7}
+         >
+           <Ionicons name="log-out-outline" size={24} color={colors.error} />
+           <Text style={[styles.logoutText, { color: colors.error }]}>Logout</Text>
+         </TouchableOpacity>
 
-        {/* App Info */}
-        <View style={styles.appInfo}>
-          <Text style={styles.appVersion}>Baatchit v1.0.0</Text>
-        </View>
+         {/* App Info */}
+         <View style={styles.appInfo}>
+           <Text style={[styles.appVersion, { color: colors.textSecondary }]}>Baatchit v1.0.0</Text>
+         </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -127,7 +141,8 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#E0E0E0',
   },
   headerTitle: {
     ...typography.h2,
@@ -137,11 +152,9 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xl,
     marginHorizontal: spacing.md,
     marginTop: spacing.lg,
-    borderRadius: borderRadius.lg,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+    paddingBottom: spacing.xl,
   },
   avatarContainer: {
     position: 'relative',
@@ -160,16 +173,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    borderRadius: borderRadius.round,
+    borderRadius: 16,
     width: 32,
     height: 32,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
+    borderColor: '#FFFFFF',
+    backgroundColor: '#2196F3',
   },
   profileName: {
     ...typography.h3,
     marginBottom: 4,
+    fontWeight: '600',
   },
   profileStatus: {
     ...typography.caption,
@@ -190,23 +206,20 @@ const styles = StyleSheet.create({
   optionsContainer: {
     marginTop: spacing.lg,
     marginHorizontal: spacing.md,
+    borderRadius: 0,
   },
   optionItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.lg,
-    marginBottom: spacing.sm,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#E0E0E0',
   },
   optionIcon: {
     width: 40,
     height: 40,
-    borderRadius: borderRadius.lg,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.md,

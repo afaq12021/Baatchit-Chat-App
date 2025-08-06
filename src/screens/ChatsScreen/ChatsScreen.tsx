@@ -99,14 +99,14 @@ const ChatsScreen = () => {
 
   const renderChatItem = ({ item }: { item: Chat }) => (
     <TouchableOpacity
-      style={styles.chatItem}
+      style={[styles.chatItem, { borderBottomColor: colors.border }]}
       onPress={() => openChat(item)}
       activeOpacity={0.7}
     >
       <View style={styles.avatarContainer}>
-        <Text style={styles.avatar}>{item.avatar}</Text>
+        <Text style={[styles.avatar, { backgroundColor: colors.inputBackground }]}>{item.avatar}</Text>
         {item.unreadCount > 0 && (
-          <View style={styles.unreadBadge}>
+          <View style={[styles.unreadBadge, { backgroundColor: '#25D366' }]}>
             <Text style={styles.unreadText}>
               {item.unreadCount > 99 ? '99+' : item.unreadCount}
             </Text>
@@ -116,9 +116,9 @@ const ChatsScreen = () => {
 
       <View style={styles.chatContent}>
         <View style={styles.chatHeader}>
-          <Text style={styles.chatName}>{item.name}</Text>
+          <Text style={[styles.chatName, { color: colors.text }]}>{item.name}</Text>
           <View style={styles.rightSection}>
-            <Text style={styles.timestamp}>{item.timestamp}</Text>
+            <Text style={[styles.timestamp, { color: colors.textSecondary }]}>{item.timestamp}</Text>
             <TouchableOpacity
               onPress={() => handleToggleFavorite(item.id)}
               style={styles.favoriteButton}
@@ -131,7 +131,7 @@ const ChatsScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={styles.lastMessage} numberOfLines={1}>
+        <Text style={[styles.lastMessage, { color: colors.textSecondary }]} numberOfLines={1}>
           {item.lastMessage}
         </Text>
       </View>
@@ -162,46 +162,43 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
   },
   headerTitle: {
     ...typography.h2,
+    fontSize: 20,
+    fontWeight: '600',
   },
   chatsList: {
-    padding: spacing.md,
+    padding: 0,
   },
   chatItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.lg,
-    marginBottom: spacing.sm,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    borderBottomWidth: 0.5,
   },
   avatarContainer: {
     position: 'relative',
     marginRight: spacing.md,
   },
   avatar: {
-    fontSize: 40,
-    width: 60,
-    height: 60,
+    fontSize: 32,
+    width: 50,
+    height: 50,
     textAlign: 'center',
-    lineHeight: 60,
-    borderRadius: borderRadius.round,
+    lineHeight: 50,
+    borderRadius: 25,
     overflow: 'hidden',
   },
   unreadBadge: {
     position: 'absolute',
     top: -2,
     right: -2,
-    borderRadius: borderRadius.round,
-    minWidth: 20,
-    height: 20,
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 4,
@@ -209,9 +206,11 @@ const styles = StyleSheet.create({
   unreadText: {
     fontSize: 10,
     fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   chatContent: {
     flex: 1,
+    marginLeft: spacing.md,
   },
   chatHeader: {
     flexDirection: 'row',
@@ -221,22 +220,25 @@ const styles = StyleSheet.create({
   },
   chatName: {
     ...typography.body,
-    fontWeight: '600',
+    fontWeight: '500',
+    fontSize: 16,
+    marginBottom: 2,
     flex: 1,
   },
   rightSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   timestamp: {
     ...typography.small,
-    marginRight: spacing.sm,
+    fontSize: 12,
+    marginBottom: 2,
   },
   favoriteButton: {
-    padding: 4,
+    display: 'none', 
   },
   lastMessage: {
     ...typography.caption,
+    fontSize: 14,
   },
 });
 

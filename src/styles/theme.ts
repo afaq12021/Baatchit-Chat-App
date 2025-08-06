@@ -5,9 +5,11 @@ export const lightColors = {
   secondary: '#607D8B', // Blue Grey
   background: '#FFFFFF',
   surface: '#F5F5F5',
+  surfaceVariant: '#FFFFFF',
   text: '#212121',
   textSecondary: '#757575',
   textLight: '#FFFFFF',
+  textInvert: '#000000',
   border: '#E0E0E0',
   accent: '#FF4081',
   success: '#4CAF50',
@@ -17,6 +19,8 @@ export const lightColors = {
   chatBubbleUser: '#2196F3',
   chatBubbleOther: '#E3F2FD',
   shadow: '#000000',
+  inputBackground: '#F5F5F5',
+  cardBackground: '#FFFFFF',
 };
 
 export const darkColors = {
@@ -26,9 +30,11 @@ export const darkColors = {
   secondary: '#78909C', // Lighter blue grey
   background: '#121212',
   surface: '#1E1E1E',
+  surfaceVariant: '#2C2C2C',
   text: '#FFFFFF',
   textSecondary: '#B0B0B0',
   textLight: '#FFFFFF',
+  textInvert: '#FFFFFF',
   border: '#333333',
   accent: '#FF4081',
   success: '#66BB6A',
@@ -38,6 +44,8 @@ export const darkColors = {
   chatBubbleUser: '#1976D2',
   chatBubbleOther: '#2C2C2C',
   shadow: '#000000',
+  inputBackground: '#2C2C2C',
+  cardBackground: '#1E1E1E',
 };
 
 export const colors = lightColors; // Default export for backward compatibility

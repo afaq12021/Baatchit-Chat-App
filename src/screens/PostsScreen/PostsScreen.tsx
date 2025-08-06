@@ -30,7 +30,17 @@ const PostsScreen = () => {
     isRefetching,
   } = useQuery({
     queryKey: ['posts'],
-    queryFn: apiService.getPostsWithUsers,
+    queryFn: async () => {
+      try {
+        console.log('Fetching posts...');
+        const result = await apiService.getPostsWithUsers();
+        console.log('Posts fetched successfully:', result.length);
+        return result;
+      } catch (error) {
+        console.error('Error in queryFn:', error);
+        throw error;
+      }
+    },
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 3,
   });
