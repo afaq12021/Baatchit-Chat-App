@@ -30,6 +30,10 @@ const ProfileScreen = () => {
     await StorageService.saveThemeMode(themeMode === 'light' ? 'dark' : 'light');
   };
 
+  const handleEditProfile = () => {
+    navigation.navigate('edit-profile' as never);
+  };
+
   const profileOptions = [
     { icon: 'person-outline', title: 'Account', subtitle: 'Privacy, security, change number' },
     { icon: 'chatbubbles-outline', title: 'Chats', subtitle: 'Theme, wallpapers, chat history' },
@@ -94,7 +98,11 @@ const ProfileScreen = () => {
           </View>
           <Text style={[styles.profileName, { color: colors.text }]}>Afaq Ul Islam</Text>
           <Text style={[styles.profileStatus, { color: colors.textSecondary }]}>Available</Text>
-          <TouchableOpacity style={[styles.editButton, { backgroundColor: colors.inputBackground }]}>
+          <TouchableOpacity 
+            style={[styles.editButton, { backgroundColor: colors.inputBackground }]}
+            onPress={handleEditProfile}
+            activeOpacity={0.7}
+          >
             <Ionicons name="pencil" size={16} color={colors.primary} />
             <Text style={[styles.editButtonText, { color: colors.primary }]}>Edit Profile</Text>
           </TouchableOpacity>

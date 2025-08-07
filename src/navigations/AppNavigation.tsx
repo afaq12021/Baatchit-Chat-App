@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import ChatScreen from '../screens/ChatScreen/ChatScreen';
 import BottomTab from './BottomTab';
+import EditProfileScreen from '../screens/EditProfileScreen/EditProfileScreen';
 
 
 
@@ -18,6 +19,8 @@ const AppNavigation = () => {
         <Stack.Screen name="splash-screen" component={SplashScreen} />
         <Stack.Screen name="main" component={BottomTab} />
         <Stack.Screen name="chat" component={ChatScreen} />
+        <Stack.Screen name="edit-profile" component={EditProfileScreen} />
+        
        
       </Stack.Navigator>
     </NavigationContainer>
